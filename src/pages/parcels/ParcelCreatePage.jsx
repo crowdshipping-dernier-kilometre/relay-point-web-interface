@@ -7,19 +7,22 @@ import { AppContext } from "../../services/context/AppContext";
 import { CircularProgress } from "@mui/material";
 import { dispatchToast, handleFormatDateTime } from "../../utils/helper";
 import { ToastContainer, toast } from "react-toastify";
+import { Warehouse } from "lucide-react";
 
-const ActualityCreatePage = () => {
+const ParcelCreatePage = () => {
   const { actualityService } = useContext(AppContext);
 
   // Default values
   const defaultValues = {
-    title: "",
-    description: "",
-    event: false,
-    imageFile: null, // Fichier brut
-    image: null, // URL pour le preview
-    imageByteArray: null,
-    imageBase64: null,
+    idRecipient: "",
+    // parcelSize: "",
+    parcelWeight: "",
+    parcelHeight: "",
+    parcelWidth: "",
+    parcelLength: "",
+    parcelDescription: "",
+    warehouse: "",
+    // parcelImage: "",
   };
 
   // Function to convert a file to base64
@@ -61,7 +64,7 @@ const ActualityCreatePage = () => {
       dispatchToast("error", response.message);
       return;
     }
-    dispatchToast("success", "Actualité créée");
+    dispatchToast("success", "Nouveau colis de livraison ajouté");
     handleReset();
   };
 
@@ -90,7 +93,7 @@ const ActualityCreatePage = () => {
 
   return (
     <div className="flex-1 overflow-auto relative z-10">
-      <Header title={`Nouvelle actualité`} />
+      <Header title={`Nouveau colis de livraison`} />
 
       <main className="max-w-4xl mx-auto py-6 px-4 lg:px-8">
         <div
@@ -101,23 +104,77 @@ const ActualityCreatePage = () => {
           }}
         >
           <TextField
-            label="Titre"
+            label="ID Colis"
             variant="outlined"
             fullWidth
-            name="title"
-            value={values.title}
+            name="idParcel"
+            value={values.idParcel}
             onChange={handleChange}
           />
           <TextField
-            label="Description"
+            label="ID Crowdshipper"
             variant="outlined"
             fullWidth
-            name="description"
-            value={values.description}
+            name="idCrowdshipper"
+            value={values.idCrowdshipper}
             multiline
             onChange={handleChange}
           />
-          <div className="flex items-center justify-start mb-6">
+          <TextField
+            label="ID Recipient"
+            variant="outlined"
+            fullWidth
+            name="idRecipient"
+            value={values.idRecipient}
+            multiline
+            onChange={handleChange}
+          />
+          <TextField
+            label="Poids"
+            variant="outlined"
+            fullWidth
+            name="weight"
+            value={values.parcelWeight}
+            multiline
+            onChange={handleChange}
+          />
+          <TextField
+            label="Hauteur"
+            variant="outlined"
+            fullWidth
+            name="height"
+            value={values.parcelHeight}
+            multiline
+            onChange={handleChange}
+          />
+          <TextField
+            label="Largeur"
+            variant="outlined"
+            fullWidth
+            name="width"
+            value={values.parcelWidth}
+            multiline
+            onChange={handleChange}
+          />
+          <TextField
+            label="Longueur"
+            variant="outlined"
+            fullWidth
+            name="length"
+            value={values.parcelLength}
+            multiline
+            onChange={handleChange}
+          />
+          <TextField
+            label="Warehouse"
+            variant="outlined"
+            fullWidth
+            name="warehouse"
+            value={values.warehouse}
+            multiline
+            onChange={handleChange}
+          />
+          {/* <div className="flex items-center justify-start mb-6">
             <Checkbox
               color="primary"
               name="event"
@@ -127,7 +184,7 @@ const ActualityCreatePage = () => {
               }
             />
             <p className="text-white-600">C'est un evenement ?</p>
-          </div>
+          </div> */}
           {values.image && (
             <div className="flex items-center mb-4">
               <img
@@ -173,11 +230,15 @@ const ActualityCreatePage = () => {
           ) : (
             <Button
               variant="contained"
-              disabled={!values.title || !values.description}
+              disabled={
+                !values.idParcel ||
+                !values.idCrowdshipper ||
+                !values.idRecipient
+              }
               startIcon={<Add />}
               onClick={handleCreate}
             >
-              Créer
+              Ajouter le colis
             </Button>
           )}
         </div>
@@ -186,4 +247,4 @@ const ActualityCreatePage = () => {
   );
 };
 
-export default ActualityCreatePage;
+export default ParcelCreatePage;

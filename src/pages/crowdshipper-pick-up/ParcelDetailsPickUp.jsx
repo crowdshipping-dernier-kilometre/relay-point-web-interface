@@ -1,15 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { TextField, Button } from "@mui/material";
 import Header from "../../components/common/Header";
-import {
-  Add,
-  Block,
-  Delete,
-  Edit,
-  HideImage,
-  LockOpen,
-  Save,
-} from "@mui/icons-material";
+import { Add, Block, Delete, Edit, LockOpen, Save } from "@mui/icons-material";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import {
@@ -20,27 +12,26 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import { AppContext } from "../../services/context/AppContext";
 import { TIMEOUT_REFRESH } from "../../utils/constants";
-import { Eye, EyeOff } from "lucide-react";
+import { Package } from "lucide-react";
 
-const PostEditEmbeddedPage = () => {
-  const { postId } = useParams();
+const ParcelDetailsPickUpPage = () => {
+  const { parcelId } = useParams();
   const navigate = useNavigate();
 
-  const { postService } = useContext(AppContext);
-
+  const { communityService, categoryService } = useContext(AppContext);
   // Default values
   const defaultValues = {
     id: "",
-    content: "",
-    username: "",
-    datePost: "",
-    nbLike: 0,
-    visible: false,
-    image: "",
+    name: "",
+    description: "",
+    isPublic: handleFormatBoolean(false),
+    categoryName: "",
+    banDate: "",
   };
 
   // States
   const [values, setValues] = useState(defaultValues);
+  const [category, setCategory] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isModified, setIsModified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,12 +47,13 @@ const PostEditEmbeddedPage = () => {
   const handleReset = () => {
     setValues(defaultValues);
     setIsModified(false);
+    setCategory(null);
   };
 
-  // Fonction pour la suppression du post (exemple simple)
-  const handleDelete = async () => {
+  // Fonction pour la suppression de la communauté (exemple simple)
+  const handleWithdrawParcelByCrowdshipper = async () => {
     setIsLoading(true);
-    const response = await postService.deletePostById(postId);
+    const response = await communityService.deleteCommunityById(communityId);
     setIsLoading(false);
     if (response.error) {
       console.error(response.message);
@@ -69,80 +61,75 @@ const PostEditEmbeddedPage = () => {
       return;
     }
     handleReset();
-    console.log("Suppression du post");
-    dispatchToast("success", "Post supprimé");
+    console.log("Suppression de la communauté");
+    dispatchToast("success", "Suppression de la communauté");
     setTimeout(() => {
-      navigate("/posts");
+      navigate("/communautes");
     }, TIMEOUT_REFRESH);
   };
 
-  const getPostById = async () => {
-    const response = await postService.getPostById(postId);
+  const getCommunityById = async () => {
+    const response = await communityService.getCommunityById(communityId);
     if (response.error) {
       console.error(response.message);
       dispatchToast("error", response.message);
       return;
     }
-    const post = response.data;
+    const community = response.data;
     setValues({
-      id: post.id,
-      content: post.content,
-      username: post.username,
-      datePost: handleFormatDateTime(new Date(post.datePost)),
-      nbLike: post.nbLike ?? 0,
-      visible: post.visible,
-      image: post.image,
+      id: community.id,
+      name: community.name,
+      description: community.description,
+      isPublic: community.isPublic ? "Oui" : "Non",
+      categoryName: community.categoryName,
+      banDate: handleFormatDateTime(new Date(community.banDate)),
+      //
+      //   nbModerators: community.moderators.length,
+      //   nbUsers: community.users.length,
+      //   nbPosts: community.posts.length,
+      //   nbBannedUsers: community.bannedUsers.length,
+      //   admin: `${community.admin.firstName} ${community.admin.lastName}`,
     });
+    getCategoryById(community.categoryId);
   };
 
-  const makeVisiblePost = async () => {
-    setIsLoading(true);
-    const response = await postService.makeVisiblePost(postId);
-    setIsLoading(false);
+  const getCategoryById = async (id) => {
+    if (!id) {
+      return;
+    }
+    const response = await categoryService.getCategoryById(id);
     if (response.error) {
       console.error(response.message);
       dispatchToast("error", response.message);
       return;
     }
-    dispatchToast("success", "Post est maintenant visible");
-  };
-
-  const makeInvisiblePost = async () => {
-    setIsLoading(true);
-    const response = await postService.makeInvisiblePost(postId);
-    setIsLoading(false);
-    if (response.error) {
-      console.error(response.message);
-      dispatchToast("error", response.message);
-      return;
-    }
-    dispatchToast("success", "Post maintenant invisible");
-    getPostById();
+    const category = response.data;
+    setCategory(category);
   };
 
   useEffect(() => {
-    getPostById();
+    getCommunityById();
   }, []);
 
   return (
     <div className="flex-1 overflow-auto relative z-10">
-      <Header title={`Posts / ${postId}`} />
+      <Header title={`Colis / ${parcelId}`} />
 
       <main className="max-w-4xl mx-auto py-6 px-4 lg:px-8">
-        <div className="flex justify-end mb-4 space-x-4">
+        {/* <div className="flex justify-end mb-4 space-x-4">
           {!isLoading && (
             <>
-              {/* <Link to="/nouveau-utilisateur">
+              <Link to="/nouvelle-communaute">
                 <Button
                   variant="text"
                   startIcon={<Add />}
                 >
-                  Créer un nouveau
+                  Créer une nouvelle
                 </Button>
-              </Link> */}
+              </Link>
             </>
           )}
-        </div>
+        </div> */}
         <div
           className="grid grid-cols-1 gap-4 p-8"
           style={{
@@ -150,20 +137,8 @@ const PostEditEmbeddedPage = () => {
             borderRadius: "16px",
           }}
         >
-          {values.image && (
-            <div className="flex items-center justify-center mb-6">
-              {/* preview image base64 */}
-
-              <img
-                src={`data:image/png;base64,${values.image}`}
-                alt={values.title}
-                className="w-full h-full object-cover"
-                style={{ borderRadius: "16px" }}
-              />
-            </div>
-          )}
           <TextField
-            label="ID"
+            label="ID Colis"
             variant="outlined"
             fullWidth
             name="id"
@@ -171,48 +146,38 @@ const PostEditEmbeddedPage = () => {
             disabled
           />
           <TextField
-            label="Contenu"
-            multiline
+            label="ID Crowdshipper"
             variant="outlined"
             fullWidth
-            name="content"
-            value={values.content}
+            name="idCrowdshipper"
+            value={values.idCrowdshipper}
             onChange={handleChange}
             disabled
           />
           <TextField
-            label="Username"
+            label="ID Recipient"
             variant="outlined"
             fullWidth
-            name="creatorId"
-            value={values.username}
+            name="idRecipient"
+            value={values.description}
             onChange={handleChange}
             disabled
           />
           <TextField
-            label="Nombre de likes"
+            label="Taille du colis"
             variant="outlined"
             fullWidth
-            name="nbLike"
-            value={values.nbLike}
+            name="parcelSize"
+            value={values.categoryName ?? ""}
             onChange={handleChange}
             disabled
           />
           <TextField
-            label="Date de publication"
+            label="Poids du colis"
             variant="outlined"
             fullWidth
-            name="datePost"
-            value={values.datePost}
-            onChange={handleChange}
-            disabled
-          />
-          <TextField
-            label="Visibilité du post"
-            variant="outlined"
-            fullWidth
-            name="visible"
-            value={handleFormatBoolean(values.visible)}
+            name="parcelSize"
+            value={values.categoryName ?? ""}
             onChange={handleChange}
             disabled
           />
@@ -226,24 +191,13 @@ const PostEditEmbeddedPage = () => {
           ) : (
             <>
               {/* Bouton Supprimer */}
-              {/* <Button
+              <Button
                 variant="outlined"
-                onClick={handleDelete}
-                color="error"
-                startIcon={<Delete />}
+                onClick={handleWithdrawParcelByCrowdshipper}
+                startIcon={<Package />}
               >
-                Supprimer
-              </Button> */}
-
-              {values.visible && (
-                <Button
-                  variant="outlined"
-                  onClick={makeInvisiblePost}
-                  startIcon={<EyeOff />}
-                >
-                  Rendre invisible
-                </Button>
-              )}
+                Retrait du colis par le crowdshipper
+              </Button>
             </>
           )}
         </div>
@@ -252,4 +206,4 @@ const PostEditEmbeddedPage = () => {
   );
 };
 
-export default PostEditEmbeddedPage;
+export default ParcelDetailsPickUpPage;

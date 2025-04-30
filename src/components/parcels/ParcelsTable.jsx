@@ -106,7 +106,7 @@ const rows = [
   },
 ];
 
-const ActualitiesTable = () => {
+const ParcelsTable = () => {
   const [actualitiesData, setActualitiesData] = useState([]); // to uncomment during the integration
   // const [actualitiesData, setActualitiesData] = useState(
   //   rows.map(mapActualityForDataGrid)
@@ -146,4 +146,4 @@ const ActualitiesTable = () => {
     </motion.div>
   );
 };
-export default ActualitiesTable;
+export default ParcelsTable;

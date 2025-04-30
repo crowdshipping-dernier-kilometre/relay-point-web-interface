@@ -25,7 +25,7 @@ const GuidePage = () => {
       <Header title="Manuel d'utilisation" />
 
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
-        <div className="mt-4">
+        {/* <div className="mt-4">
           <div className="text-2xl font-semibold mt-8 mb-4">
             Table de données
           </div>
@@ -99,7 +99,7 @@ const GuidePage = () => {
             allowfullscreen
             frameborder="0"
           ></iframe>
-        </div>
+        </div> */}
       </main>
     </div>
   );

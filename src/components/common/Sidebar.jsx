@@ -12,6 +12,10 @@ import {
   MessagesSquare,
   MessageSquareCode,
   MessageSquareDashed,
+  Package,
+  DoorClosed,
+  CircleCheckBig,
+  RefreshCcwDot,
 } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -25,34 +29,22 @@ const SIDEBAR_ITEMS = [
     href: "/",
   },
   {
-    name: "Actualités",
-    icon: Newspaper,
+    name: "Crowdshipper Pick-Up",
+    icon: RefreshCcwDot,
     color: "#8B5CF6",
-    href: "/actualites",
+    href: "/crowdchipper-retrait-colis-code",
   },
   {
-    name: "Utilisateurs",
-    icon: Users,
-    color: "#EC4899",
-    href: "/utilisateurs",
-  },
-  {
-    name: "Communautés",
-    icon: MessagesSquare,
+    name: "Colis",
+    icon: Package,
     color: "#F59E0B",
-    href: "/communautes",
+    href: "/colis",
   },
   {
-    name: "Posts",
-    icon: MessageSquareDashed,
+    name: "Cloturer Livraisons",
+    icon: CircleCheckBig,
     color: "#3B82F6",
-    href: "/posts",
-  },
-  {
-    name: "Parcours d'orientation",
-    icon: Route,
-    color: "#10B981",
-    href: "/parcours-orientation",
+    href: "/parcours-orientation/mettre-a-jour-balises-classe/:classId",
   },
 
   // { name: "Analytics", icon: TrendingUp, color: "#3B82F6", href: "/analytics" },

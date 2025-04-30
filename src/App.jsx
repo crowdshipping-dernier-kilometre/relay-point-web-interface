@@ -3,24 +3,13 @@ import { Route, Routes } from "react-router-dom";
 // import Sidebar from "./components/common/Sidebar";
 
 import OverviewPage from "./pages/overview/OverviewPage";
-import UsersPage from "./pages/users/UsersPage";
 import SettingsPage from "./pages/settings/SettingsPage";
 import DashboardLayout from "./layouts/DashboardLayout";
-
 import { AppProvider } from "./services/context/AppContext";
 import LoginPage from "./pages/auth/LoginPage";
 import TestComponent from "./components/common/TestComponent";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import CommunitiesPage from "./pages/communities/CommunitiesPage";
-import ActualitiesPage from "./pages/actualities/ActualitiesPage";
-import UserEditEmbeddedPage from "./pages/users/UserEditEmbeddedPage";
-import ActualityEditEmbeddedPage from "./pages/actualities/ActualityEditEmbeddedPage";
-import ActualityCreatePage from "./pages/actualities/ActulityCreatePage";
-import CommunityCreatePage from "./pages/communities/CommunityCreatePage";
-import CommunityEditEmbeddedPage from "./pages/communities/CommunityEditEmbeddedPage";
-import PostEditEmbeddedPage from "./pages/post-publication/PostEditEmbeddedPage";
-import PostsPage from "./pages/post-publication/PostsPage";
 import TagEditEmbeddedPage from "./pages/orientation-courses/TagEditEmbeddedPage";
 import TagCreatePage from "./pages/orientation-courses/TagCreatePage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
@@ -30,6 +19,11 @@ import ClassCreatePage from "./pages/orientation-courses/ClassCreatePage";
 import ClassEditEmbeddedPage from "./pages/orientation-courses/ClassEditEmbeddedPage";
 import UpdateTagsOfClassPage from "./pages/orientation-courses/UpdateTagsOfClassPage";
 import GuidePage from "./pages/settings/GuidePage";
+import ParcelsPage from "./pages/parcels/ParcelsPage";
+import ParcelEditEmbeddedPage from "./pages/parcels/ParcelEditEmbeddedPage";
+import ParcelCreatePage from "./pages/parcels/ParcelCreatePage";
+import ParcelDetailsPickUpPage from "./pages/crowdshipper-pick-up/ParcelDetailsPickUp";
+import ParcelPickUpCodePage from "./pages/crowdshipper-pick-up/ParcelPickUpCodePage";
 
 function App() {
   const darkTheme = createTheme({
@@ -92,44 +86,28 @@ function App() {
                 element={<OverviewPage />}
               />
               <Route
-                path="/actualites"
-                element={<ActualitiesPage />}
+                path="/crowdshipper-retrait-colis-details"
+                element={<ParcelDetailsPickUpPage />}
               />
               <Route
-                path="/actualites/:actualityId"
-                element={<ActualityEditEmbeddedPage />}
+                path="/crowdchipper-retrait-colis-code"
+                element={<ParcelPickUpCodePage />}
               />
               <Route
-                path="/nouvelle-actualite"
-                element={<ActualityCreatePage />}
+                path="/colis"
+                element={<ParcelsPage />}
               />
               <Route
-                path="/utilisateurs"
-                element={<UsersPage />}
+                path="/colis"
+                element={<ParcelsPage />}
               />
               <Route
-                path="/utilisateurs/:userId"
-                element={<UserEditEmbeddedPage />}
+                path="/colis/:parcelId"
+                element={<ParcelEditEmbeddedPage />}
               />
               <Route
-                path="/communautes"
-                element={<CommunitiesPage />}
-              />
-              <Route
-                path="/communautes/:communityId"
-                element={<CommunityEditEmbeddedPage />}
-              />
-              <Route
-                path="/nouvelle-communaute"
-                element={<CommunityCreatePage />}
-              />
-              <Route
-                path="/posts"
-                element={<PostsPage />}
-              />
-              <Route
-                path="/posts/:postId"
-                element={<PostEditEmbeddedPage />}
+                path="/nouveau-colis"
+                element={<ParcelCreatePage />}
               />
               <Route
                 path="/parametres"

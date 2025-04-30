@@ -2,14 +2,7 @@ import { BarChart2, ShoppingBag, Users, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 
 import Header from "../../components/common/Header";
-import StatCard from "../../components/common/StatCard";
-
-import SalesChannelChart from "../../components/overview/SalesChannelChart";
-import { UserStats } from "../users/UsersPage";
-import { ActualityStats } from "../actualities/ActualitiesPage";
-import { CommunityStats } from "../communities/CommunitiesPage";
-import { PostStats } from "../post-publication/PostsPage";
-import { OrientationCourseStats } from "../orientation-courses/OrientationCoursesPage";
+import { ParcelStats } from "../parcels/ParcelsPage";
 
 const OverviewPage = () => {
   return (
@@ -17,16 +10,39 @@ const OverviewPage = () => {
       <Header title="Aperçu" />
 
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
+        <div
+          className="flex flex-wrap justify-center mb-8"
+          style={{ backgroundColor: "#fff" }}
+        >
+          <img
+            src="/images/insa-hdf-logo.webp"
+            alt="Overview"
+            width={300}
+          />
+          <img
+            src="/images/uphf-logo.webp"
+            alt="Overview"
+            width={300}
+          />
+          <img
+            src="/images/milex-logo.png"
+            alt="Overview"
+            width={300}
+          />
+          <img
+            src="/images/ecc-logo.png"
+            alt="Overview"
+            width={300}
+          />
+          <img
+            src="/images/tec-leg-logo.png"
+            alt="Overview"
+            width={300}
+          />
+        </div>
+
         {/* STATS */}
-        <UserStats title={"Utilisateurs"} />
-
-        <ActualityStats title={"Actualités"} />
-
-        <CommunityStats title={"Communautés"} />
-
-        <PostStats title={"Posts"} />
-
-        <OrientationCourseStats title={"Parcours d'orientation"} />
+        <ParcelStats title={"Colis"} />
       </main>
     </div>
   );

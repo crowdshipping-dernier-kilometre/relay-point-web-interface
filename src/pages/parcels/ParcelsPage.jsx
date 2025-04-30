@@ -5,27 +5,33 @@ import StatCard from "../../components/common/StatCard";
 
 import {
   AlertTriangle,
+  Blocks,
+  CircleCheckBig,
   DollarSign,
+  Loader,
   Newspaper,
   Package,
+  PackageCheck,
+  RefreshCcwDot,
   TrendingUp,
 } from "lucide-react";
-import ActualitiesTable from "../../components/actualities/ActualitiesTable";
+import ActualitiesTable from "../../components/parcels/ParcelsTable";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { AppContext } from "../../services/context/AppContext";
 import { useState, useContext, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
+import ParcelsTable from "../../components/parcels/ParcelsTable";
 
-const ActualitiesPage = () => {
+const ParcelsPage = () => {
   return (
     <div className="flex-1 overflow-auto relative z-10">
-      <Header title="Actualités" />
+      <Header title="Colis" />
 
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
         {/* STATS */}
-        <ActualityStats />
+        <ParcelStats />
 
         {/* <ProductsTable /> */}
 
@@ -40,7 +46,7 @@ const ActualitiesPage = () => {
           </Link>
         </div>
 
-        <ActualitiesTable />
+        <ParcelsTable />
 
         <ToastContainer />
 
@@ -53,27 +59,27 @@ const ActualitiesPage = () => {
     </div>
   );
 };
-export default ActualitiesPage;
+export default ParcelsPage;
 
-export const ActualityStats = ({ title }) => {
-  const [actualityStats, setActualityStats] = useState({
+export const ParcelStats = ({ title }) => {
+  const [ParcelsStats, setParcelsStats] = useState({
     total: "...",
     publishedLastSevenDays: "...",
   });
   const { actualityService } = useContext(AppContext);
 
-  const getActualityStats = async () => {
-    const response = await actualityService.getActualityStats();
+  const getParcelsStats = async () => {
+    const response = await actualityService.getParcelsStats();
     if (response.error) {
       console.error(response.message);
       dispatchToast("error", response.message);
     } else {
-      setActualityStats(response.data);
+      setParcelsStats(response.data);
     }
   };
 
   useEffect(() => {
-    getActualityStats();
+    getParcelsStats();
   }, []);
 
   return (
@@ -96,17 +102,44 @@ export const ActualityStats = ({ title }) => {
         transition={{ duration: 1 }}
       >
         <StatCard
-          name="Total Actualités"
-          icon={Newspaper}
-          value={actualityStats.total}
+          name="Total Colis"
+          icon={Package}
+          value={ParcelsStats.total}
           color="#6366F1"
         />
 
         <StatCard
-          name="Les 7 derniers jours"
-          icon={Newspaper}
-          value={actualityStats.publishedLastSevenDays}
+          name="Arrivés au Point Relais"
+          icon={RefreshCcwDot}
+          value={ParcelsStats.publishedLastSevenDays}
+          color="#F59E0B"
+        />
+
+        <StatCard
+          name="En attente de crowdshipper"
+          icon={Blocks}
+          value={ParcelsStats.publishedLastSevenDays}
+          color="#EF4444"
+        />
+
+        <StatCard
+          name="En cours de livraison"
+          icon={Loader}
+          value={ParcelsStats.publishedLastSevenDays}
+          color="#F59E"
+        />
+
+        <StatCard
+          name="Livrés au client"
+          icon={PackageCheck}
+          value={ParcelsStats.publishedLastSevenDays}
           color="#10B981"
+        />
+        <StatCard
+          name="Cloturés par le Point Relais"
+          icon={CircleCheckBig}
+          value={ParcelsStats.publishedLastSevenDays}
+          color="#22C55E"
         />
       </motion.div>
     </>

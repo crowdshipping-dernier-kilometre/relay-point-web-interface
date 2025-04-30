@@ -8,8 +8,9 @@ import { CircularProgress } from "@mui/material";
 import { dispatchToast, handleFormatDateTime } from "../../utils/helper";
 import { ToastContainer, toast } from "react-toastify";
 import Cookies from "js-cookie";
+import { PackageSearch, Search } from "lucide-react";
 
-const CommunityCreatePage = () => {
+const ParcelPickUpCodePage = () => {
   const { communityService, categoryService } = useContext(AppContext);
 
   // Default values
@@ -45,22 +46,22 @@ const CommunityCreatePage = () => {
   };
 
   const handleCreate = async () => {
-    setIsLoading(true);
-    const response = await communityService.createCommunity({
-      nom: values.name,
-      description: values.description,
-      isPublic: values.isPublic,
-      categoryId: values.categoryId,
-      adminToken: Cookies.get("token"),
-    });
-    setIsLoading(false);
-    if (response.error) {
-      console.error(response.message);
-      dispatchToast("error", response.message);
-      return;
-    }
-    dispatchToast("success", "Communauté créée");
-    handleReset();
+    // setIsLoading(true);
+    // const response = await communityService.createCommunity({
+    //   nom: values.name,
+    //   description: values.description,
+    //   isPublic: values.isPublic,
+    //   categoryId: values.categoryId,
+    //   adminToken: Cookies.get("token"),
+    // });
+    // setIsLoading(false);
+    // if (response.error) {
+    //   console.error(response.message);
+    //   dispatchToast("error", response.message);
+    //   return;
+    // }
+    // dispatchToast("success", "Communauté créée");
+    // handleReset();
   };
 
   // get all users
@@ -107,7 +108,7 @@ const CommunityCreatePage = () => {
 
   return (
     <div className="flex-1 overflow-auto relative z-10">
-      <Header title={`Nouvelle Communauté`} />
+      <Header title={`Crowdshipper Code Pick Up`} />
 
       <main className="max-w-4xl mx-auto py-6 px-4 lg:px-8">
         <div
@@ -117,15 +118,19 @@ const CommunityCreatePage = () => {
             borderRadius: "16px",
           }}
         >
+          <div className="text-sm font-semibold text-gray-100">
+            Renseignez le code fourni par le crowdshipper.
+          </div>
+
           <TextField
-            label="Nom"
+            label="Code"
             variant="outlined"
             fullWidth
-            name="name"
-            value={values.name}
+            name="code"
+            value={values.code}
             onChange={handleChange}
           />
-          <TextField
+          {/* <TextField
             label="Description"
             variant="outlined"
             fullWidth
@@ -133,69 +138,7 @@ const CommunityCreatePage = () => {
             value={values.description}
             multiline
             onChange={handleChange}
-          />
-          <div className="flex items-center justify-start mb-6">
-            <Checkbox
-              color="primary"
-              name="event"
-              checked={values.isPublic}
-              onChange={(e) =>
-                setValues({ ...values, isPublic: e.target.checked })
-              }
-              disabled
-            />
-            <p className="text-white-600">C'est une communauté public ?</p>
-          </div>
-
-          <Autocomplete
-            disablePortal
-            options={categories ?? []}
-            // disabled
-            fullWidth
-            onChange={(event, newValue) => {
-              //console.log(newValue?.value);
-              setValues({ ...values, categoryId: Number(newValue?.value) });
-            }}
-            // value={
-            //   values.categoryId
-            //     ? categories.find(
-            //         (category) => category.value === values.categoryId
-            //       )
-            //     : null
-            // }
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Categorie"
-              />
-            )}
-          />
-
-          <div className="text-sm font-semibold text-gray-100">
-            NB: Si la catégorie n'existe pas, vous pouvez la créer.
-          </div>
-
-          <TextField
-            label="Nom de la nouvelle catégorie"
-            variant="outlined"
-            fullWidth
-            name="name"
-            // disabled
-            value={categoryCreationNameField}
-            onChange={(e) => setCategoryCreationNameField(e.target.value)}
-          />
-          {isLoading ? (
-            <CircularProgress />
-          ) : (
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => handleCreateCategory()}
-              disabled={!categoryCreationNameField}
-            >
-              Créer une nouvelle catégorie
-            </Button>
-          )}
+          /> */}
         </div>
 
         <ToastContainer />
@@ -207,10 +150,10 @@ const CommunityCreatePage = () => {
             <Button
               variant="contained"
               disabled={!values.name || !values.description}
-              startIcon={<Add />}
+              startIcon={<PackageSearch />}
               onClick={handleCreate}
             >
-              Créer
+              Rechercher le colis
             </Button>
           )}
         </div>
@@ -219,4 +162,4 @@ const CommunityCreatePage = () => {
   );
 };
 
-export default CommunityCreatePage;
+export default ParcelPickUpCodePage;

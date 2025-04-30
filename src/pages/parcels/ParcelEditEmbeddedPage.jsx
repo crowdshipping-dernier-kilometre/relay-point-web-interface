@@ -9,20 +9,24 @@ import { ToastContainer, toast } from "react-toastify";
 import { AppContext } from "../../services/context/AppContext";
 import { TIMEOUT_REFRESH } from "../../utils/constants";
 
-const ActualityEditEmbeddedPage = () => {
+const ParcelEditEmbeddedPage = () => {
   const { actualityId } = useParams();
   const navigate = useNavigate();
 
   const { actualityService } = useContext(AppContext);
   // Default values
   const defaultValues = {
-    id: "",
-    title: "",
-    description: "",
-    event: false,
-    // imageFile: null, // Fichier brut
-    image: null, // URL pour le preview or fichier brut
-    publicationDate: "",
+    idParcel: "",
+    idCrowdshipper: "",
+    idRecipient: "",
+    // parcelSize: "",
+    parcelWeight: "",
+    parcelHeight: "",
+    parcelWidth: "",
+    parcelLength: "",
+    parcelDescription: "",
+    warehouse: "",
+    // parcelImage: "",
   };
 
   // States
@@ -113,64 +117,76 @@ const ActualityEditEmbeddedPage = () => {
             borderRadius: "16px",
           }}
         >
-          {values.image && (
-            <div className="flex items-center justify-center mb-6">
-              {/* preview image base64 */}
-
-              <img
-                src={`data:image/png;base64,${values.image}`}
-                alt={values.title}
-                className="w-full h-full object-cover"
-                style={{ borderRadius: "16px" }}
-              />
-            </div>
-          )}
           <TextField
-            label="ID"
+            label="ID Colis"
             variant="outlined"
             fullWidth
-            name="id"
-            value={values.id}
-            disabled
-          />
-          <TextField
-            label="Titre"
-            variant="outlined"
-            fullWidth
-            name="title"
-            value={values.title}
+            name="idParcel"
+            value={values.idParcel}
             onChange={handleChange}
-            disabled
           />
           <TextField
-            label="Description"
+            label="ID Crowdshipper"
             variant="outlined"
             fullWidth
-            name="description"
-            value={values.description}
+            name="idCrowdshipper"
+            value={values.idCrowdshipper}
+            multiline
             onChange={handleChange}
-            disabled
           />
-          <div className="flex items-center justify-start mb-6">
-            <Checkbox
-              color="primary"
-              name="event"
-              checked={values.event}
-              onChange={(e) =>
-                setValues({ ...values, event: e.target.checked })
-              }
-              disabled
-            />
-            <p className="text-white-600">C'est un evenement ?</p>
-          </div>
-
           <TextField
-            label="Publiée le"
+            label="ID Recipient"
             variant="outlined"
             fullWidth
-            name="publicationDate"
-            value={values.publicationDate}
-            disabled
+            name="idRecipient"
+            value={values.idRecipient}
+            multiline
+            onChange={handleChange}
+          />
+          <TextField
+            label="Poids"
+            variant="outlined"
+            fullWidth
+            name="weight"
+            value={values.parcelWeight}
+            multiline
+            onChange={handleChange}
+          />
+          <TextField
+            label="Hauteur"
+            variant="outlined"
+            fullWidth
+            name="height"
+            value={values.parcelHeight}
+            multiline
+            onChange={handleChange}
+          />
+          <TextField
+            label="Largeur"
+            variant="outlined"
+            fullWidth
+            name="width"
+            value={values.parcelWidth}
+            multiline
+            onChange={handleChange}
+          />
+          <TextField
+            label="Longueur"
+            variant="outlined"
+            fullWidth
+            name="length"
+            value={values.parcelLength}
+            multiline
+            onChange={handleChange}
+          />
+          <TextField
+            label="Warehouse"
+            variant="outlined"
+            fullWidth
+            name="warehouse"
+            value={values.warehouse}
+            multiline
+            onChange={handleChange}
           />
         </div>
 
@@ -198,4 +214,4 @@ const ActualityEditEmbeddedPage = () => {
   );
 };
 
-export default ActualityEditEmbeddedPage;
+export default ParcelEditEmbeddedPage;
