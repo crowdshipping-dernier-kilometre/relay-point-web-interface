@@ -92,6 +92,17 @@ export const mapClassModel = (aClass) => {
     }
 }
 
+export const mapParcelModel = (parcel) => {
+    return {
+        id: parcel.id,
+        name: parcel.name,
+        description: parcel.description,
+        beginDate: parcel.beginDate,
+        endDate: parcel.endDate,
+        code: parcel.code,
+    }
+}
+
 export const mapTagModel = (tag) => {
     return {
         id: tag.id,
@@ -170,5 +181,18 @@ export const mapClassForDataGrid = (aClass) => {
         id: mapModel.id,
         name: mapModel.name,
         description: mapModel.description,
+    }
+}
+
+export const mapParcelForDataGrid = (parcel) => {
+    const mapModel = mapParcelModel(parcel);
+    return {
+        id: mapModel.id,
+        crowdshipperId: mapModel.crowdshipperId,
+        recipientId: mapModel.recipientId,
+        parcelSize: mapModel.parcelSize,
+        parcelWeight: mapModel.parcelWeight,
+        parcelVolume: mapModel.parcelVolume,
+        parcelStatus: mapModel.parcelStatus,
     }
 }

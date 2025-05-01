@@ -22,26 +22,38 @@ const columns = [
     width: DATA_GRID_COLUMN_DEFAULT_WIDTH,
   },
   {
-    field: "title",
-    headerName: "Titre",
+    field: "crowdshipperId",
+    headerName: "ID Crowdshipper",
     width: DATA_GRID_COLUMN_DEFAULT_WIDTH,
     editable: false,
   },
   {
-    field: "description",
-    headerName: "Description",
+    field: "recipientId",
+    headerName: "ID Destinataire",
     width: DATA_GRID_COLUMN_DEFAULT_WIDTH,
     editable: false,
   },
   {
-    field: "event",
-    headerName: "Evènement",
+    field: "parcelSize",
+    headerName: "Taille",
     width: DATA_GRID_COLUMN_DEFAULT_WIDTH,
     editable: false,
   },
   {
-    field: "publicationDate",
-    headerName: "Publiée le",
+    field: "parcelWeight",
+    headerName: "Poids",
+    width: DATA_GRID_COLUMN_DEFAULT_WIDTH,
+    editable: false,
+  },
+  {
+    field: "parcelVolume",
+    headerName: "Volume",
+    width: DATA_GRID_COLUMN_DEFAULT_WIDTH,
+    editable: false,
+  },
+  {
+    field: "parcelStatus",
+    headerName: "Statut",
     width: DATA_GRID_COLUMN_DEFAULT_WIDTH,
     editable: false,
   },
@@ -60,7 +72,7 @@ const columns = [
           onClick={() => {
             console.log("id : " + id);
             console.log("row : " + JSON.stringify(row));
-            window.location.href = `/actualites/${id}`;
+            window.location.href = `/colis/${id}`;
           }}
         />,
       ];
@@ -70,63 +82,122 @@ const columns = [
 
 const rows = [
   {
-    id: 1,
-    title: "Actualité 1",
-    description: "Description de l'actualité 1",
-    event: true,
-    publicationDate: "2023-01-01",
+    id: "1",
+    crowdshipperId: "23",
+    recipientId: "333",
+    parcelSize: "12",
+    parcelWeight: "34",
+    parcelVolume: "16",
+    parcelStatus: "En cours",
   },
   {
-    id: 2,
-    title: "Actualité 2",
-    description: "Description de l'actualité 2",
-    event: false,
-    publicationDate: "2023-02-01",
+    id: "2",
+    crowdshipperId: "25",
+    recipientId: "334",
+    parcelSize: "10",
+    parcelWeight: "20",
+    parcelVolume: "14",
+    parcelStatus: "En attente",
   },
   {
-    id: 3,
-    title: "Actualité 3",
-    description: "Description de l'actualité 3",
-    event: true,
-    publicationDate: "2023-03-01",
+    id: "3",
+    crowdshipperId: "27",
+    recipientId: "335",
+    parcelSize: "15",
+    parcelWeight: "40",
+    parcelVolume: "18",
+    parcelStatus: "Livré",
   },
   {
-    id: 4,
-    title: "Actualité 4",
-    description: "Description de l'actualité 4",
-    event: false,
-    publicationDate: "2023-04-01",
+    id: "4",
+    crowdshipperId: "23",
+    recipientId: "336",
+    parcelSize: "13",
+    parcelWeight: "22",
+    parcelVolume: "15",
+    parcelStatus: "Annulé",
   },
   {
-    id: 5,
-    title: "Actualité 5",
-    description: "Description de l'actualité 5",
-    event: true,
-    publicationDate: "2023-05-01",
+    id: "5",
+    crowdshipperId: "29",
+    recipientId: "337",
+    parcelSize: "11",
+    parcelWeight: "30",
+    parcelVolume: "17",
+    parcelStatus: "En cours",
+  },
+  {
+    id: "6",
+    crowdshipperId: "30",
+    recipientId: "338",
+    parcelSize: "16",
+    parcelWeight: "50",
+    parcelVolume: "20",
+    parcelStatus: "En attente",
+  },
+  {
+    id: "7",
+    crowdshipperId: "24",
+    recipientId: "339",
+    parcelSize: "9",
+    parcelWeight: "18",
+    parcelVolume: "13",
+    parcelStatus: "Livré",
+  },
+  {
+    id: "8",
+    crowdshipperId: "28",
+    recipientId: "340",
+    parcelSize: "14",
+    parcelWeight: "38",
+    parcelVolume: "19",
+    parcelStatus: "En cours",
+  },
+  {
+    id: "9",
+    crowdshipperId: "31",
+    recipientId: "341",
+    parcelSize: "10",
+    parcelWeight: "25",
+    parcelVolume: "14",
+    parcelStatus: "Annulé",
+  },
+  {
+    id: "10",
+    crowdshipperId: "32",
+    recipientId: "342",
+    parcelSize: "13",
+    parcelWeight: "28",
+    parcelVolume: "16",
+    parcelStatus: "En cours",
   },
 ];
 
 const ParcelsTable = () => {
-  const [actualitiesData, setActualitiesData] = useState([]); // to uncomment during the integration
-  // const [actualitiesData, setActualitiesData] = useState(
+  // const [parcelsData, setparcelsData] = useState([]); // to uncomment during the integration
+  // const [parcelsData, setparcelsData] = useState(
   //   rows.map(mapActualityForDataGrid)
   // ); //to comment during the integration
+  const [parcelsData, setParcelsData] = useState(rows);
 
-  const { actualityService } = useContext(AppContext);
+  const { parcelService } = useContext(AppContext);
+  const relayPointId = localStorage.getItem("relayPointId");
 
-  const getAllActualities = async () => {
-    const response = await actualityService.getAllActualities();
+  const getAllParcelsByRealyPointId = async () => {
+    const response = await parcelService.getAllParcelsByRelayPoint(
+      relayPointId
+    );
     if (response.error) {
       console.error(response.message);
       dispatchToast("error", response.message);
     } else {
       const users = response.data;
-      setActualitiesData(users.map(mapActualityForDataGrid));
+      setParcelsData(users.map(mapParcelForDataGrid));
     }
   };
 
   useEffect(() => {
-    getAllActualities();
+    // getAllParcelsByRealyPointId();
   }, []);
 
   return (
@@ -139,7 +210,7 @@ const ParcelsTable = () => {
       <ToastContainer />
       <div>
         <DataGridComponent
-          rows={actualitiesData}
+          rows={parcelsData}
           columns={columns}
         />
       </div>

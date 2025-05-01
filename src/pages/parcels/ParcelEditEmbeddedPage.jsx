@@ -13,20 +13,16 @@ const ParcelEditEmbeddedPage = () => {
   const { actualityId } = useParams();
   const navigate = useNavigate();
 
-  const { actualityService } = useContext(AppContext);
+  const { parcelService } = useContext(AppContext);
   // Default values
   const defaultValues = {
-    idParcel: "",
-    idCrowdshipper: "",
-    idRecipient: "",
-    // parcelSize: "",
+    id: "",
+    crowdshipperId: "",
+    recipientId: "",
+    parcelSize: "",
     parcelWeight: "",
-    parcelHeight: "",
-    parcelWidth: "",
-    parcelLength: "",
-    parcelDescription: "",
+    parcelVolume: "",
     warehouse: "",
-    // parcelImage: "",
   };
 
   // States
@@ -48,10 +44,10 @@ const ParcelEditEmbeddedPage = () => {
     setIsModified(false);
   };
 
-  // Fonction pour la suppression de l'actuality (exemple simple)
+  // Fonction pour la suppression du colis (exemple simple)
   const handleDelete = async () => {
     setIsLoading(true);
-    const response = await actualityService.deleteActualityById(actualityId);
+    const response = await parcelService.deleteParcelById(actualityId);
     setIsLoading(false);
     if (response.error) {
       console.error(response.message);
@@ -60,15 +56,15 @@ const ParcelEditEmbeddedPage = () => {
     }
 
     handleReset();
-    console.log("Suppression de l'actualité");
-    dispatchToast("success", "Actualité supprimée");
+    console.log("Suppression du colis");
+    dispatchToast("success", "Colis supprimé");
     setTimeout(() => {
-      navigate("/actualites");
+      navigate("/colis");
     }, TIMEOUT_REFRESH);
   };
 
-  const getActualityById = async () => {
-    const response = await actualityService.getActualityById(actualityId);
+  const getParcelById = async () => {
+    const response = await parcelService.getParcelById(actualityId);
     if (response.error) {
       console.error(response.message);
       dispatchToast("error", response.message);
@@ -77,36 +73,57 @@ const ParcelEditEmbeddedPage = () => {
     const actuality = response.data;
     setValues({
       id: actuality.id,
-      title: actuality.title,
-      description: actuality.description,
-      event: actuality.event,
-      image: actuality.image,
-      publicationDate: handleFormatDateTime(
-        new Date(actuality.publicationDate)
-      ),
+      crowdshipperId: actuality.crowdshipperId,
+      recipientId: actuality.recipientId,
+      parcelSize: actuality.parcelSize,
+      parcelWeight: actuality.parcelWeight,
+      parcelVolume: actuality.parcelVolume,
+      warehouse: actuality.warehouse,
     });
   };
 
+  const handleSave = async () => {
+    setIsLoading(true);
+    const response = await parcelService.updateParcelById(actualityId, values);
+    setIsLoading(false);
+    if (response.error) {
+      console.error(response.message);
+      dispatchToast("error", response.message);
+      return;
+    }
+    dispatchToast("success", "Modifications enregistrées");
+    setIsEditing(false);
+    getParcelById();
+  };
+
   useEffect(() => {
-    getActualityById();
+    getParcelById();
   }, []);
 
   return (
     <div className="flex-1 overflow-auto relative z-10">
-      <Header title={`Actualités / ${actualityId}`} />
+      <Header title={`Colis / ${values.id}`} />
 
       <main className="max-w-4xl mx-auto py-6 px-4 lg:px-8">
         <div className="flex justify-end mb-4 space-x-4">
           {!isLoading && (
             <>
-              {/* <Link to="/nouveau-utilisateur">
+              <Button
+                variant="text"
+                startIcon={<Edit />}
+                onClick={() => setIsEditing(!isEditing)}
+              >
+                Modifier
+              </Button>
+
+              <Link to="/nouveau-colis">
                 <Button
                   variant="text"
                   startIcon={<Add />}
                 >
-                  Créer un nouveau
+                  Créer un nouveau colis
                 </Button>
-              </Link> */}
+              </Link>
             </>
           )}
         </div>
@@ -121,16 +138,16 @@ const ParcelEditEmbeddedPage = () => {
             label="ID Colis"
             variant="outlined"
             fullWidth
-            name="idParcel"
-            value={values.idParcel}
+            name="id"
+            value={values.id}
             onChange={handleChange}
           />
           <TextField
             label="ID Crowdshipper"
             variant="outlined"
             fullWidth
-            name="idCrowdshipper"
-            value={values.idCrowdshipper}
+            name="crowdshipperId"
+            value={values.crowdshipperId}
             multiline
             onChange={handleChange}
           />
@@ -138,8 +155,8 @@ const ParcelEditEmbeddedPage = () => {
             label="ID Recipient"
             variant="outlined"
             fullWidth
-            name="idRecipient"
-            value={values.idRecipient}
+            name="recipientId"
+            value={values.recipientId}
             multiline
             onChange={handleChange}
           />
@@ -147,35 +164,26 @@ const ParcelEditEmbeddedPage = () => {
             label="Poids"
             variant="outlined"
             fullWidth
-            name="weight"
+            name="parcelWeight"
             value={values.parcelWeight}
             multiline
             onChange={handleChange}
           />
           <TextField
-            label="Hauteur"
+            label="Volume"
             variant="outlined"
             fullWidth
-            name="height"
-            value={values.parcelHeight}
+            name="parcelVolume"
+            value={values.parcelVolume}
             multiline
             onChange={handleChange}
           />
           <TextField
-            label="Largeur"
+            label="Taille"
             variant="outlined"
             fullWidth
-            name="width"
-            value={values.parcelWidth}
-            multiline
-            onChange={handleChange}
-          />
-          <TextField
-            label="Longueur"
-            variant="outlined"
-            fullWidth
-            name="length"
-            value={values.parcelLength}
+            name="parcelSize"
+            value={values.parcelSize}
             multiline
             onChange={handleChange}
           />
@@ -197,6 +205,16 @@ const ParcelEditEmbeddedPage = () => {
             <CircularProgress />
           ) : (
             <>
+              {/* Bouton Enregistrer */}
+              <Button
+                variant="contained"
+                onClick={handleSave}
+                disabled={!isModified}
+                startIcon={<Save />}
+              >
+                Enregistrer
+              </Button>
+
               {/* Bouton Supprimer */}
               <Button
                 variant="outlined"

@@ -10,19 +10,22 @@ import { ToastContainer, toast } from "react-toastify";
 import { Warehouse } from "lucide-react";
 
 const ParcelCreatePage = () => {
-  const { actualityService } = useContext(AppContext);
+  const { parcelService } = useContext(AppContext);
 
   // Default values
   const defaultValues = {
-    idRecipient: "",
-    // parcelSize: "",
+    recipientLastName: "",
+    recipientFirstName: "",
+    recipientPhoneNumber: "",
+    recipientEmail: "",
+    recipientAddress: "",
+    recipientCity: "",
+    recipientPostalcode: "",
+    recipientCountry: "",
+    parcelSize: "",
     parcelWeight: "",
-    parcelHeight: "",
-    parcelWidth: "",
-    parcelLength: "",
-    parcelDescription: "",
+    parcelVolume: "",
     warehouse: "",
-    // parcelImage: "",
   };
 
   // Function to convert a file to base64
@@ -52,11 +55,12 @@ const ParcelCreatePage = () => {
 
   const handleCreate = async () => {
     setIsLoading(true);
-    const response = await actualityService.createActuality({
-      title: values.title,
-      description: values.description,
-      event: values.event,
-      image: values.imageBase64,
+    const response = await parcelService.createActuality({
+      recipientId: values.recipientId,
+      parcelSize: values.parcelSize,
+      parcelWeight: values.parcelWeight,
+      parcelVolume: values.parcelVolume,
+      warehouse: values.warehouse,
     });
     setIsLoading(false);
     if (response.error) {
@@ -104,33 +108,79 @@ const ParcelCreatePage = () => {
           }}
         >
           <TextField
-            label="ID Colis"
+            label="Nom du destinataire"
             variant="outlined"
             fullWidth
-            name="idParcel"
-            value={values.idParcel}
-            onChange={handleChange}
-          />
-          <TextField
-            label="ID Crowdshipper"
-            variant="outlined"
-            fullWidth
-            name="idCrowdshipper"
-            value={values.idCrowdshipper}
+            name="recipientLastName"
+            value={values.recipientLastName}
             multiline
             onChange={handleChange}
           />
           <TextField
-            label="ID Recipient"
+            label="Prénom du destinataire"
             variant="outlined"
             fullWidth
-            name="idRecipient"
-            value={values.idRecipient}
+            name="recipientFirstName"
+            value={values.recipientFirstName}
             multiline
             onChange={handleChange}
           />
           <TextField
-            label="Poids"
+            label="Numéro de téléphone du destinataire"
+            variant="outlined"
+            fullWidth
+            name="recipientPhoneNumber"
+            value={values.recipientPhoneNumber}
+            multiline
+            onChange={handleChange}
+          />
+          <TextField
+            label="Email du destinataire"
+            variant="outlined"
+            fullWidth
+            name="recipientEmail"
+            value={values.recipientEmail}
+            multiline
+            onChange={handleChange}
+          />
+          <TextField
+            label="Adresse du destinataire"
+            variant="outlined"
+            fullWidth
+            name="recipientAddress"
+            value={values.recipientAddress}
+            multiline
+            onChange={handleChange}
+          />
+          <TextField
+            label="Ville du destinataire"
+            variant="outlined"
+            fullWidth
+            name="recipientCity"
+            value={values.recipientCity}
+            multiline
+            onChange={handleChange}
+          />
+          <TextField
+            label="Code postal du destinataire"
+            variant="outlined"
+            fullWidth
+            name="recipientPostalcode"
+            value={values.recipientPostalcode}
+            multiline
+            onChange={handleChange}
+          />
+          <TextField
+            label="Pays du destinataire"
+            variant="outlined"
+            fullWidth
+            name="recipientCountry"
+            value={values.recipientCountry}
+            multiline
+            onChange={handleChange}
+          />
+          <TextField
+            label="Poids du colis"
             variant="outlined"
             fullWidth
             name="weight"
@@ -139,29 +189,20 @@ const ParcelCreatePage = () => {
             onChange={handleChange}
           />
           <TextField
-            label="Hauteur"
+            label="Volume du colis"
             variant="outlined"
             fullWidth
             name="height"
-            value={values.parcelHeight}
+            value={values.parcelVolume}
             multiline
             onChange={handleChange}
           />
           <TextField
-            label="Largeur"
+            label="Taille du colis"
             variant="outlined"
             fullWidth
             name="width"
-            value={values.parcelWidth}
-            multiline
-            onChange={handleChange}
-          />
-          <TextField
-            label="Longueur"
-            variant="outlined"
-            fullWidth
-            name="length"
-            value={values.parcelLength}
+            value={values.parcelSize}
             multiline
             onChange={handleChange}
           />
@@ -208,7 +249,7 @@ const ParcelCreatePage = () => {
             </div>
           )}
 
-          <Button
+          {/* <Button
             variant="outlined"
             component="label"
           >
@@ -219,7 +260,7 @@ const ParcelCreatePage = () => {
               onChange={handleChangeImage}
               accept="image/*"
             />
-          </Button>
+          </Button> */}
         </div>
 
         <ToastContainer />
@@ -231,9 +272,17 @@ const ParcelCreatePage = () => {
             <Button
               variant="contained"
               disabled={
-                !values.idParcel ||
-                !values.idCrowdshipper ||
-                !values.idRecipient
+                !values.recipientLastName ||
+                !values.recipientFirstName ||
+                !values.recipientPhoneNumber ||
+                !values.recipientEmail ||
+                !values.recipientAddress ||
+                !values.recipientCity ||
+                !values.recipientPostalcode ||
+                !values.recipientCountry ||
+                !values.parcelWeight ||
+                !values.parcelVolume ||
+                !values.parcelSize
               }
               startIcon={<Add />}
               onClick={handleCreate}

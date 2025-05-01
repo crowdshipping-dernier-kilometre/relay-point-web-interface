@@ -10,20 +10,15 @@ import LoginPage from "./pages/auth/LoginPage";
 import TestComponent from "./components/common/TestComponent";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import TagEditEmbeddedPage from "./pages/orientation-courses/TagEditEmbeddedPage";
-import TagCreatePage from "./pages/orientation-courses/TagCreatePage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 import ProtectedRoute from "./ProtectedRoute";
-import OrientationCoursesPage from "./pages/orientation-courses/OrientationCoursesPage";
-import ClassCreatePage from "./pages/orientation-courses/ClassCreatePage";
-import ClassEditEmbeddedPage from "./pages/orientation-courses/ClassEditEmbeddedPage";
-import UpdateTagsOfClassPage from "./pages/orientation-courses/UpdateTagsOfClassPage";
 import GuidePage from "./pages/settings/GuidePage";
 import ParcelsPage from "./pages/parcels/ParcelsPage";
 import ParcelEditEmbeddedPage from "./pages/parcels/ParcelEditEmbeddedPage";
 import ParcelCreatePage from "./pages/parcels/ParcelCreatePage";
 import ParcelDetailsPickUpPage from "./pages/crowdshipper-pick-up/ParcelDetailsPickUp";
 import ParcelPickUpCodePage from "./pages/crowdshipper-pick-up/ParcelPickUpCodePage";
+import ParcelValidationPage from "./pages/parcel-validation/ParcelValidationPage";
 
 function App() {
   const darkTheme = createTheme({
@@ -86,7 +81,7 @@ function App() {
                 element={<OverviewPage />}
               />
               <Route
-                path="/crowdshipper-retrait-colis-details"
+                path="/crowdshipper-retrait-colis-details/:parcelId"
                 element={<ParcelDetailsPickUpPage />}
               />
               <Route
@@ -113,29 +108,10 @@ function App() {
                 path="/parametres"
                 element={<SettingsPage />}
               />
+
               <Route
-                path="/parcours-orientation"
-                element={<OrientationCoursesPage />}
-              />
-              <Route
-                path="/parcours-orientation/balises/:tagId"
-                element={<TagEditEmbeddedPage />}
-              />
-              <Route
-                path="/nouvelle-balise"
-                element={<TagCreatePage />}
-              />
-              <Route
-                path="/parcours-orientation/classes/:classId"
-                element={<ClassEditEmbeddedPage />}
-              />
-              <Route
-                path="/nouvelle-classe"
-                element={<ClassCreatePage />}
-              />
-              <Route
-                path="/parcours-orientation/mettre-a-jour-balises-classe/:classId"
-                element={<UpdateTagsOfClassPage />}
+                path="/valider-livraisons/:relayPointId"
+                element={<ParcelValidationPage />}
               />
 
               <Route

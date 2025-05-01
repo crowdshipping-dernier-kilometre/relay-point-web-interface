@@ -7,11 +7,11 @@ import { CircularProgress } from "@mui/material";
 import { dispatchToast, handleFormatDateTime } from "../../utils/helper";
 import { ToastContainer, toast } from "react-toastify";
 import { AppContext } from "../../services/context/AppContext";
-import { se } from "date-fns/locale";
 import { set } from "date-fns";
+import { CheckCircle } from "lucide-react";
 
-const UpdateTagsOfClassPage = () => {
-  const { classId } = useParams();
+const ParcelValidationPage = () => {
+  const { relayPointId } = useParams();
   const navigate = useNavigate();
 
   const { orientationCourseService } = useContext(AppContext);
@@ -44,7 +44,9 @@ const UpdateTagsOfClassPage = () => {
   };
 
   const getTagsFromClass = async () => {
-    const response = await orientationCourseService.getTagsFromClass(classId);
+    const response = await orientationCourseService.getTagsFromClass(
+      relayPointId
+    );
     if (response.error) {
       console.error(response.message);
       dispatchToast("error", response.message);
@@ -62,7 +64,7 @@ const UpdateTagsOfClassPage = () => {
       return;
     }
     const response = await orientationCourseService.deleteTagsFromClass(
-      classId,
+      relayPointId,
       classTagIds
     );
     if (response.error) {
@@ -70,6 +72,19 @@ const UpdateTagsOfClassPage = () => {
       dispatchToast("error", response.message);
 
       return;
+    }
+  };
+
+  const getAllParcelsDeliveredByRelayPointId = async () => {
+    const response = await parcelService.getAllParcelsByRelayPoint(
+      relayPointId
+    );
+    if (response.error) {
+      console.error(response.message);
+      dispatchToast("error", response.message);
+    } else {
+      const users = response.data;
+      setParcelsData(users.map(mapParcelForDataGrid));
     }
   };
 
@@ -84,7 +99,7 @@ const UpdateTagsOfClassPage = () => {
   };
 
   const getClassById = async () => {
-    const response = await orientationCourseService.getClassById(classId);
+    const response = await orientationCourseService.getClassById(relayPointId);
     if (response.error) {
       console.error(response.message);
       dispatchToast("error", response.message);
@@ -112,7 +127,7 @@ const UpdateTagsOfClassPage = () => {
         return;
       }
       const response = await orientationCourseService.addTagsToClass(
-        classId,
+        relayPointId,
         valuesClassTagIds
       );
 
@@ -131,12 +146,13 @@ const UpdateTagsOfClassPage = () => {
     getAllTags();
     getClassById();
     getTagsFromClass();
+    getAllParcelsDeliveredByRelayPointId();
     Promise.all([getAllTags(), getClassById(), getTagsFromClass()]);
   }, []);
 
   return (
     <div className="flex-1 overflow-auto relative z-10">
-      <Header title={`Mise à jour des balises / ${classId}`} />
+      <Header title={`Valider les livraisons / ${relayPointId}`} />
 
       <main className="max-w-4xl mx-auto py-6 px-4 lg:px-8">
         <div className="flex justify-end mb-4 space-x-4">
@@ -154,10 +170,10 @@ const UpdateTagsOfClassPage = () => {
           )}
         </div>
 
-        <div className="text-2xl font-semibold mt-4 mb-4">
+        {/* <div className="text-2xl font-semibold mt-4 mb-4">
           {" "}
           Nom de la classe : {theClass?.name}
-        </div>
+        </div> */}
         <div
           className="grid grid-cols-1 gap-4 p-8"
           style={{
@@ -198,9 +214,16 @@ const UpdateTagsOfClassPage = () => {
               <Button
                 variant="outlined"
                 onClick={handleUpdateClassTags}
-                startIcon={<Save />}
+                startIcon={<CheckCircle />}
               >
-                Enregistrer
+                Clôturer les livraisons sélectionnées
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={handleUpdateClassTags}
+                startIcon={<CheckCircle />}
+              >
+                Clôturer tous les colis livrées
               </Button>
             </>
           )}
@@ -210,4 +233,4 @@ const UpdateTagsOfClassPage = () => {
   );
 };
 
-export default UpdateTagsOfClassPage;
+export default ParcelValidationPage;

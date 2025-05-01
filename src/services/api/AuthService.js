@@ -8,7 +8,7 @@ export class AuthService {
     // CRUD operations
     async login(email, password, rememberMe) {
         try {
-            const response = await axios.post(`${this.apiUrl}/api/auth/login`, {
+            const response = await axios.post(`${this.apiUrl}/api/relaypoints/login`, {
                 email: email,
                 password: password
             });
@@ -48,7 +48,21 @@ export class AuthService {
             if (!userId) {
                 return { error: true, message: "User not found" };
             }
-            const response = await axios.get(`${this.apiUrl}/api/users/${userId}`, {
+            const response = await axios.get(`${this.apiUrl}/api/relaypoints/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('token')}`,
+                }
+            });
+            return { error: false, data: response.data };
+        }
+        catch (error) {
+            return { error: true, message: error.message };
+        }
+    }
+
+    async getUserMe() {
+        try {
+            const response = await axios.get(`${this.apiUrl}/api/relaypoints/me`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get('token')}`,
                 }

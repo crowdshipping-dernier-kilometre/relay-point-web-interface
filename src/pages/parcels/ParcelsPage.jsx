@@ -12,6 +12,7 @@ import {
   Newspaper,
   Package,
   PackageCheck,
+  PackageX,
   RefreshCcwDot,
   TrendingUp,
 } from "lucide-react";
@@ -36,12 +37,12 @@ const ParcelsPage = () => {
         {/* <ProductsTable /> */}
 
         <div className="flex justify-end mb-4 space-x-4">
-          <Link to="/nouvelle-actualite">
+          <Link to="/nouveau-colis">
             <Button
               variant="text"
               startIcon={<Add />}
             >
-              Créer une nouvelle
+              Ajouter une nouveau colis
             </Button>
           </Link>
         </div>
@@ -62,24 +63,29 @@ const ParcelsPage = () => {
 export default ParcelsPage;
 
 export const ParcelStats = ({ title }) => {
-  const [ParcelsStats, setParcelsStats] = useState({
-    total: "...",
-    publishedLastSevenDays: "...",
+  const [parcelStats, setParcelStats] = useState({
+    totalParcels: "0",
+    arrivedAtRelayPoint: "0",
+    waitingForCrowdshipper: "0",
+    inTransit: "0",
+    deliveredToClient: "0",
+    blockedOrIssue: "0",
+    validatedByRelayPoint: "0",
   });
-  const { actualityService } = useContext(AppContext);
+  const { parcelService } = useContext(AppContext);
 
-  const getParcelsStats = async () => {
-    const response = await actualityService.getParcelsStats();
+  const getParcelStats = async () => {
+    const response = await parcelService.getparcelStats();
     if (response.error) {
       console.error(response.message);
       dispatchToast("error", response.message);
     } else {
-      setParcelsStats(response.data);
+      setParcelStats(response.data);
     }
   };
 
   useEffect(() => {
-    getParcelsStats();
+    // getParcelStats();
   }, []);
 
   return (
@@ -104,41 +110,46 @@ export const ParcelStats = ({ title }) => {
         <StatCard
           name="Total Colis"
           icon={Package}
-          value={ParcelsStats.total}
+          value={parcelStats.totalParcels}
           color="#6366F1"
         />
 
         <StatCard
           name="Arrivés au Point Relais"
           icon={RefreshCcwDot}
-          value={ParcelsStats.publishedLastSevenDays}
+          value={parcelStats.arrivedAtRelayPoint}
           color="#F59E0B"
         />
 
         <StatCard
           name="En attente de crowdshipper"
           icon={Blocks}
-          value={ParcelsStats.publishedLastSevenDays}
+          value={parcelStats.waitingForCrowdshipper}
           color="#EF4444"
         />
 
         <StatCard
           name="En cours de livraison"
           icon={Loader}
-          value={ParcelsStats.publishedLastSevenDays}
+          value={parcelStats.inTransit}
           color="#F59E"
         />
-
         <StatCard
           name="Livrés au client"
           icon={PackageCheck}
-          value={ParcelsStats.publishedLastSevenDays}
+          value={parcelStats.deliveredToClient}
           color="#10B981"
+        />
+        <StatCard
+          name="Bloqués ou problèmes"
+          icon={PackageX}
+          value={parcelStats.blockedOrIssue}
+          color="#EF4444"
         />
         <StatCard
           name="Cloturés par le Point Relais"
           icon={CircleCheckBig}
-          value={ParcelsStats.publishedLastSevenDays}
+          value={parcelStats.validatedByRelayPoint}
           color="#22C55E"
         />
       </motion.div>

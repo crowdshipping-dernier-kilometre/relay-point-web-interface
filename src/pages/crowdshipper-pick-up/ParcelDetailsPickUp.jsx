@@ -18,15 +18,15 @@ const ParcelDetailsPickUpPage = () => {
   const { parcelId } = useParams();
   const navigate = useNavigate();
 
-  const { communityService, categoryService } = useContext(AppContext);
+  const { parcelService } = useContext(AppContext);
   // Default values
   const defaultValues = {
     id: "",
-    name: "",
-    description: "",
-    isPublic: handleFormatBoolean(false),
-    categoryName: "",
-    banDate: "",
+    crowdshipperId: "",
+    recipientId: "",
+    packageSize: handleFormatBoolean(false),
+    packageWeight: "",
+    arrivedAtRelayPointAt: "",
   };
 
   // States
@@ -47,68 +47,45 @@ const ParcelDetailsPickUpPage = () => {
   const handleReset = () => {
     setValues(defaultValues);
     setIsModified(false);
-    setCategory(null);
+    // setCategory(null);
   };
 
-  // Fonction pour la suppression de la communauté (exemple simple)
-  const handleWithdrawParcelByCrowdshipper = async () => {
+  const getParcelById = async () => {
+    const response = await parcelService.getParcelById(parcelId);
+    if (response.error) {
+      console.error(response.message);
+      dispatchToast("error", response.message);
+      return;
+    }
+    const parcel = response.data;
+    setValues({
+      id: parcel.id,
+      crowdshipperId: parcel.crowdshipperId,
+      recipientId: parcel.recipientId,
+      packageSize: handleFormatBoolean(parcel.packageSize),
+      packageWeight: parcel.packageWeight,
+      arrivedAtRelayPointAt: handleFormatDateTime(parcel.arrivedAtRelayPointAt),
+    });
+  };
+
+  const pickupParcelByCrowdshipper = async () => {
     setIsLoading(true);
-    const response = await communityService.deleteCommunityById(communityId);
+    const response = await parcelService.pickupParcelByCrowdshipper(parcelId);
     setIsLoading(false);
     if (response.error) {
       console.error(response.message);
       dispatchToast("error", response.message);
       return;
     }
-    handleReset();
-    console.log("Suppression de la communauté");
-    dispatchToast("success", "Suppression de la communauté");
+    console.log("Colis récupéré par le crowdshipper");
+    dispatchToast("success", "Colis récupéré par le crowdshipper");
     setTimeout(() => {
-      navigate("/communautes");
+      navigate("/crowdchipper-retrait-colis-code");
     }, TIMEOUT_REFRESH);
   };
 
-  const getCommunityById = async () => {
-    const response = await communityService.getCommunityById(communityId);
-    if (response.error) {
-      console.error(response.message);
-      dispatchToast("error", response.message);
-      return;
-    }
-    const community = response.data;
-    setValues({
-      id: community.id,
-      name: community.name,
-      description: community.description,
-      isPublic: community.isPublic ? "Oui" : "Non",
-      categoryName: community.categoryName,
-      banDate: handleFormatDateTime(new Date(community.banDate)),
-      //
-      //   nbModerators: community.moderators.length,
-      //   nbUsers: community.users.length,
-      //   nbPosts: community.posts.length,
-      //   nbBannedUsers: community.bannedUsers.length,
-      //   admin: `${community.admin.firstName} ${community.admin.lastName}`,
-    });
-    getCategoryById(community.categoryId);
-  };
-
-  const getCategoryById = async (id) => {
-    if (!id) {
-      return;
-    }
-    const response = await categoryService.getCategoryById(id);
-    if (response.error) {
-      console.error(response.message);
-      dispatchToast("error", response.message);
-      return;
-    }
-    const category = response.data;
-    setCategory(category);
-  };
-
   useEffect(() => {
-    getCommunityById();
+    getParcelById();
   }, []);
 
   return (
@@ -193,7 +170,7 @@ const ParcelDetailsPickUpPage = () => {
               {/* Bouton Supprimer */}
               <Button
                 variant="outlined"
-                onClick={handleWithdrawParcelByCrowdshipper}
+                onClick={pickupParcelByCrowdshipper}
                 startIcon={<Package />}
               >
                 Retrait du colis par le crowdshipper

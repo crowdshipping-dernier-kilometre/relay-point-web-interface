@@ -44,7 +44,7 @@ const SIDEBAR_ITEMS = [
     name: "Cloturer Livraisons",
     icon: CircleCheckBig,
     color: "#3B82F6",
-    href: "/parcours-orientation/mettre-a-jour-balises-classe/:classId",
+    href: "/valider-livraisons/:relayPointId",
   },
 
   // { name: "Analytics", icon: TrendingUp, color: "#3B82F6", href: "/analytics" },

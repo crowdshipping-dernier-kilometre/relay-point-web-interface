@@ -38,7 +38,7 @@ const Profile = () => {
       <ToastContainer />
       <div className="flex flex-col sm:flex-row items-center mb-6">
         <img
-          src="/images/app-logo.png"
+          src="/images/last-mile-logo.webp"
           alt="Profil"
           className="rounded-full w-20 h-20 object-cover mr-4"
         />

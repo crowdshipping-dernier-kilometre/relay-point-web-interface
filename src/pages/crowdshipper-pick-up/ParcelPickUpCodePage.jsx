@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { TextField, Button, Checkbox, Autocomplete } from "@mui/material";
 import Header from "../../components/common/Header";
 import { Add, Delete, Edit, Save } from "@mui/icons-material";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../../services/context/AppContext";
 import { CircularProgress } from "@mui/material";
 import { dispatchToast, handleFormatDateTime } from "../../utils/helper";
@@ -11,28 +11,17 @@ import Cookies from "js-cookie";
 import { PackageSearch, Search } from "lucide-react";
 
 const ParcelPickUpCodePage = () => {
-  const { communityService, categoryService } = useContext(AppContext);
+  const { parcelService } = useContext(AppContext);
+  const navigate = useNavigate();
 
   // Default values
   const defaultValues = {
-    name: "",
-    description: "",
-    isPublic: true,
-    adminToken: "",
-    categoryId: "",
+    code: "",
   };
 
   // States
   const [values, setValues] = useState(defaultValues);
   const [isLoading, setIsLoading] = useState(false);
-  const [categories, setCategories] = useState(null);
-  // const [categories, setCategories] = useState([
-  //   { label: "Categorie 1", value: "1" },
-  //   { label: "Categorie 2", value: "2" },
-  //   { label: "Categorie 3", value: "3" },
-  // ]);
-  const [categoryCreationNameField, setCategoryCreationNameField] =
-    useState("");
 
   // Function for handling input changes
   const handleChange = (e) => {
@@ -45,66 +34,19 @@ const ParcelPickUpCodePage = () => {
     setValues(defaultValues);
   };
 
-  const handleCreate = async () => {
-    // setIsLoading(true);
-    // const response = await communityService.createCommunity({
-    //   nom: values.name,
-    //   description: values.description,
-    //   isPublic: values.isPublic,
-    //   categoryId: values.categoryId,
-    //   adminToken: Cookies.get("token"),
-    // });
-    // setIsLoading(false);
-    // if (response.error) {
-    //   console.error(response.message);
-    //   dispatchToast("error", response.message);
-    //   return;
-    // }
-    // dispatchToast("success", "Communauté créée");
-    // handleReset();
-  };
-
-  // get all users
-  const getCategories = async () => {
-    const response = await categoryService.getAllCategories();
-    if (response.error) {
-      toast.error(response.message);
-      console.error(response.message);
-      return;
-    }
-    const data = response.data;
-    // console.log(data);
-    const categoriesData = data.map((category) => {
-      return {
-        label: `${category.name} [${category.id}]`,
-        value: category.id,
-      };
-    });
-    setCategories(categoriesData);
-  };
-
-  const handleCreateCategory = async () => {
+  const searchParcelByCode = async () => {
     setIsLoading(true);
-    const response = await categoryService.createCategory({
-      name: categoryCreationNameField,
-    });
+    const response = await parcelService.getParcelByCode(values.code);
     setIsLoading(false);
     if (response.error) {
-      dispatchToast("error", response.message);
       console.error(response.message);
-      return;
+      dispatchToast("error", response.message);
+      dispatchToast("error", "Colis introuvable");
+      // return;
     }
-    dispatchToast(
-      "success",
-      "Categorie créée! Vous pouvez maintenant la choisir"
-    );
-    getCategories();
-    Promise.all([getCategories()]);
+    dispatchToast("success", "Colis trouvé");
+    navigate(`/crowdshipper-retrait-colis-details/${response.data.id}`);
   };
-
-  React.useEffect(() => {
-    getCategories();
-  }, []);
 
   return (
     <div className="flex-1 overflow-auto relative z-10">
@@ -149,9 +91,9 @@ const ParcelPickUpCodePage = () => {
           ) : (
             <Button
               variant="contained"
-              disabled={!values.name || !values.description}
+              disabled={!values.code}
               startIcon={<PackageSearch />}
-              onClick={handleCreate}
+              onClick={searchParcelByCode}
             >
               Rechercher le colis
             </Button>

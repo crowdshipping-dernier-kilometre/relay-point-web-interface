@@ -12,12 +12,10 @@ import { motion } from "framer-motion";
 
 import Header from "../../components/common/Header";
 import StatCard from "../../components/common/StatCard";
-import UsersTable from "../../components/users/UsersTable";
 import { dispatchToast } from "../../utils/helper";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../services/context/AppContext";
 import { ToastContainer } from "react-toastify";
-import PostsTable from "../../components/post-publication/PostsTable";
 
 const GuidePage = () => {
   return (

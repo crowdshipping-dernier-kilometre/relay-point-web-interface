@@ -8,7 +8,7 @@ const Guide = () => {
   return (
     <SettingSection
       icon={LifeBuoy}
-      title={"Aide : Comment utiliser l'Admin Dashboard ?"}
+      title={"Aide : Comment utiliser l'application Point Relais ?"}
     >
       <div className="mt-4">
         <Link to="/aide">
