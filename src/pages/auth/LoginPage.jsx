@@ -49,7 +49,7 @@ const LoginPage = () => {
       <div className="bg-gray-800 bg-opacity-50 rounded-lg shadow-lg p-8 w-full max-w-md">
         {/* bg-opacity-90 */}
         <img
-          src="/images/app-logo.png"
+          src="/images/last-mile-logo.webp"
           alt="Logo"
           className="mx-auto mb-6 bg-opacity-90"
           width={100}
