@@ -10,7 +10,6 @@ const AppProvider = ({ children }) => {
     authService: new AuthService(),
     orientationCourseService: new OrientationCourseService(),
     parcelService: new ParcelService(),
-    // categoryService: new CategoryService(),
   };
   return <Provider value={services}>{children}</Provider>;
 };

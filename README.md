@@ -2,9 +2,9 @@
 
 ### 🎆 Aperçu
 
-🔴 [prod] https://admin-dashboard-etb.vercel.app/
+🔴 [prod] <https://point-relais-dernier-km.vercel.app/>
 
-![alt text](readme-images/admin-dashboard-overview.png)
+![alt text](readme-images/relay-point-overview.png)
 
 ### 🧰 Stack technique
 
@@ -14,6 +14,28 @@
 - React Toastify
 - Recharts
 - Framer Motion
+
+### 🗂️ Structure du projet
+
+Le projet est structuré comme suit  :
+
+```bash
+my-app/
+├── public/               # Fichiers publics (index.html, favicon, images, icônes , styles globaux)
+├── src/                  # Code source principal
+│   ├── components/       # Composants UI réutilisables
+│   ├── pages/            # Chaque écran / page 
+│   ├── layouts/          # Layout du side bar global
+│   ├── pages/            # Pages principales (si routing basé sur pages)
+│   ├── services/         # Appels API, gestion des données externes et state
+│   ├── utils/            # Fonctions utilitaires, helpers
+│   └── App.tsx           # Composant racine
+├── .env                  # Variables d’environnement
+├── .gitignore
+├── package.json
+└── README.md
+
+```
 
 ### ⚙️ Lancer localement
 
