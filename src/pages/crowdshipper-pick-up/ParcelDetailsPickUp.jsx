@@ -51,32 +51,34 @@ const ParcelDetailsPickUpPage = () => {
   };
 
   const getParcelById = async () => {
-    const response = await parcelService.getParcelById(parcelId);
-    if (response.error) {
-      console.error(response.message);
-      dispatchToast("error", response.message);
-      return;
-    }
-    const parcel = response.data;
-    setValues({
-      id: parcel.id,
-      crowdshipperId: parcel.crowdshipperId,
-      recipientId: parcel.recipientId,
-      packageSize: handleFormatBoolean(parcel.packageSize),
-      packageWeight: parcel.packageWeight,
-      arrivedAtRelayPointAt: handleFormatDateTime(parcel.arrivedAtRelayPointAt),
-    });
+    // const response = await parcelService.getParcelById(parcelId);
+    // if (response.error) {
+    //   console.error(response.message);
+    //   dispatchToast("error", response.message);
+    //   return;
+    // }
+    // const parcel = response.data;
+    // setValues({
+    //   id: parcel.id,
+    //   crowdshipperId: parcel.crowdshipperId,
+    //   recipientId: parcel.recipientId,
+    //   packageSize: handleFormatBoolean(parcel.packageSize),
+    //   packageWeight: parcel.packageWeight,
+    //   arrivedAtRelayPointAt: handleFormatDateTime(parcel.arrivedAtRelayPointAt),
+    // });
   };
 
   const pickupParcelByCrowdshipper = async () => {
     setIsLoading(true);
     // const response = await parcelService.pickupParcelByCrowdshipper(parcelId);
-    setIsLoading(false);
-    if (response.error) {
-      console.error(response.message);
-      dispatchToast("error", response.message);
-      return;
-    }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    // if (response.error) {
+    //   console.error(response.message);
+    //   dispatchToast("error", response.message);
+    //   return;
+    // }
     console.log("Colis récupéré par le crowdshipper");
     dispatchToast("success", "Colis récupéré par le crowdshipper");
     setTimeout(() => {

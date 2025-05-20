@@ -37,15 +37,18 @@ const ParcelPickUpCodePage = () => {
   const searchParcelByCode = async () => {
     setIsLoading(true);
     // const response = await parcelService.getParcelByCode(values.code);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
     setIsLoading(false);
-    if (response.error) {
-      console.error(response.message);
-      dispatchToast("error", response.message);
-      dispatchToast("error", "Colis introuvable");
-      // return;
-    }
+    // if (response.error) {
+    //   console.error(response.message);
+    //   dispatchToast("error", response.message);
+    //   dispatchToast("error", "Colis introuvable");
+    //   // return;
+    // }
     dispatchToast("success", "Colis trouvé");
-    navigate(`/crowdshipper-retrait-colis-details/${response.data.id}`);
+    navigate(`/crowdshipper-retrait-colis-details/${values.code}`);
   };
 
   return (

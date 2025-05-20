@@ -8,9 +8,10 @@ import { dispatchToast, handleFormatDateTime } from "../../utils/helper";
 import { ToastContainer, toast } from "react-toastify";
 import { AppContext } from "../../services/context/AppContext";
 import { TIMEOUT_REFRESH } from "../../utils/constants";
+import { set } from "date-fns";
 
 const ParcelEditEmbeddedPage = () => {
-  const { actualityId } = useParams();
+  const { parcelId } = useParams();
   const navigate = useNavigate();
 
   const { parcelService } = useContext(AppContext);
@@ -47,7 +48,7 @@ const ParcelEditEmbeddedPage = () => {
   // Fonction pour la suppression du colis (exemple simple)
   const handleDelete = async () => {
     setIsLoading(true);
-    const response = await parcelService.deleteParcelById(actualityId);
+    const response = await parcelService.deleteParcelById(parcelId);
     setIsLoading(false);
     if (response.error) {
       console.error(response.message);
@@ -64,7 +65,7 @@ const ParcelEditEmbeddedPage = () => {
   };
 
   const getParcelById = async () => {
-    const response = await parcelService.getParcelById(actualityId);
+    const response = await parcelService.getParcelById(parcelId);
     if (response.error) {
       console.error(response.message);
       dispatchToast("error", response.message);
@@ -84,7 +85,7 @@ const ParcelEditEmbeddedPage = () => {
 
   const handleSave = async () => {
     setIsLoading(true);
-    const response = await parcelService.updateParcelById(actualityId, values);
+    const response = await parcelService.updateParcelById(parcelId, values);
     setIsLoading(false);
     if (response.error) {
       console.error(response.message);
@@ -97,7 +98,7 @@ const ParcelEditEmbeddedPage = () => {
   };
 
   useEffect(() => {
-    getParcelById();
+    // getParcelById();
   }, []);
 
   return (
@@ -208,7 +209,9 @@ const ParcelEditEmbeddedPage = () => {
               {/* Bouton Enregistrer */}
               <Button
                 variant="contained"
-                onClick={handleSave}
+                onClick={() => {
+                  toast.success("Modifications enregistrées");
+                }}
                 disabled={!isModified}
                 startIcon={<Save />}
               >
@@ -218,7 +221,12 @@ const ParcelEditEmbeddedPage = () => {
               {/* Bouton Supprimer */}
               <Button
                 variant="outlined"
-                onClick={handleDelete}
+                onClick={() => {
+                  toast.success("Colis supprimé");
+                  setTimeout(() => {
+                    navigate("/colis");
+                  }, 3000);
+                }}
                 color="error"
                 startIcon={<Delete />}
               >

@@ -14,7 +14,7 @@ const ParcelValidationPage = () => {
   const { relayPointId } = useParams();
   const navigate = useNavigate();
 
-  const { orientationCourseService } = useContext(AppContext);
+  const { parcelService } = useContext(AppContext);
   // Default values
   const defaultValues = {
     selectedTags: [],
@@ -43,105 +43,6 @@ const ParcelValidationPage = () => {
     setIsModified(false);
   };
 
-  const getTagsFromClass = async () => {
-    const response = await orientationCourseService.getTagsFromClass(
-      relayPointId
-    );
-    if (response.error) {
-      console.error(response.message);
-      dispatchToast("error", response.message);
-      return;
-    }
-    setValues({ ...values, selectedTags: response.data });
-    setClassTags(response.data);
-  };
-
-  const deleteTagsFromClass = async () => {
-    const classTagIds = classTags.map((tag) => tag.id);
-    if (classTagIds.length === 0) {
-      // console.log("No tags to delete");
-      // dispatchToast("error", "Aucune balise à supprimer");
-      return;
-    }
-    const response = await orientationCourseService.deleteTagsFromClass(
-      relayPointId,
-      classTagIds
-    );
-    if (response.error) {
-      console.error(response.message);
-      dispatchToast("error", response.message);
-
-      return;
-    }
-  };
-
-  const getAllParcelsDeliveredByRelayPointId = async () => {
-    const response = await parcelService.getAllParcelsByRelayPoint(
-      relayPointId
-    );
-    if (response.error) {
-      console.error(response.message);
-      dispatchToast("error", response.message);
-    } else {
-      const users = response.data;
-      setParcelsData(users.map(mapParcelForDataGrid));
-    }
-  };
-
-  const getAllTags = async () => {
-    const response = await orientationCourseService.getAllTags();
-    if (response.error) {
-      console.error(response.message);
-      dispatchToast("error", response.message);
-      return;
-    }
-    setAllTags(response.data);
-  };
-
-  const getClassById = async () => {
-    const response = await orientationCourseService.getClassById(relayPointId);
-    if (response.error) {
-      console.error(response.message);
-      dispatchToast("error", response.message);
-      return;
-    }
-
-    setTheClass(response.data);
-  };
-
-  const handleUpdateClassTags = async () => {
-    setIsLoading(true);
-    const deleteTagsResponse = await deleteTagsFromClass().then(async () => {
-      const valuesClassTagIds = values.selectedTags.map((tag) => tag.id);
-      if (valuesClassTagIds.length === 0 && classTags.length === 0) {
-        // console.log("No tags to add");
-        dispatchToast(
-          "error",
-          "Aucune balise lors de la mise à jour des balises"
-        );
-        return;
-      }
-      if (valuesClassTagIds.length === 0 && classTags.length === 1) {
-        console.log("No tags to add");
-        dispatchToast("success", "Balises de la classe mises à jour");
-        return;
-      }
-      const response = await orientationCourseService.addTagsToClass(
-        relayPointId,
-        valuesClassTagIds
-      );
-
-      if (response.error) {
-        console.error(response.message);
-        dispatchToast("error", response.message);
-        return;
-      }
-      dispatchToast("success", "Balises de la classe mises à jour");
-    });
-    setIsLoading(false);
-    getTagsFromClass();
-  };
-
   const parcels = [
     {
       id: 1,
@@ -164,13 +65,10 @@ const ParcelValidationPage = () => {
       name: "Parcel 5",
     },
   ];
+  const getAllParcelsDeliveredByRelayPointId = async () => {};
 
   useEffect(() => {
-    getAllTags();
-    getClassById();
-    getTagsFromClass();
     getAllParcelsDeliveredByRelayPointId();
-    Promise.all([getAllTags(), getClassById(), getTagsFromClass()]);
   }, []);
 
   return (
@@ -236,14 +134,20 @@ const ParcelValidationPage = () => {
               {/* Bouton Supprimer */}
               <Button
                 variant="outlined"
-                onClick={handleUpdateClassTags}
+                onClick={() => {
+                  toast.success("Colis livrées sélectionnées clôturées");
+                  handleReset();
+                }}
                 startIcon={<CheckCircle />}
               >
                 Clôturer les livraisons sélectionnées
               </Button>
               <Button
                 variant="outlined"
-                onClick={handleUpdateClassTags}
+                onClick={() => {
+                  toast.success("Tous les colis livrées ont été clôturées");
+                  handleReset();
+                }}
                 startIcon={<CheckCircle />}
               >
                 Clôturer tous les colis livrées

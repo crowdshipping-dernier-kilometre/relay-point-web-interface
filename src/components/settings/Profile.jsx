@@ -27,7 +27,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    getCurrentUser();
+    // getCurrentUser();
   }, []);
 
   return (
@@ -47,10 +47,10 @@ const Profile = () => {
           <h3 className="text-lg font-semibold text-gray-100">
             {currentUser
               ? `${currentUser?.firstName} ${currentUser?.name}`
-              : "..."}
+              : "John Doe"}
           </h3>
           <p className="text-gray-400">
-            {currentUser ? currentUser.email : "..."}
+            {currentUser ? currentUser.email : "john.doe@example.com"}
           </p>
         </div>
       </div>
