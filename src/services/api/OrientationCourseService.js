@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import { data } from "autoprefixer";
 
 export class OrientationCourseService {
-    apiUrl = import.meta.env.VITE_ETB_API_URL;
+    apiUrl = import.meta.env.VITE_LAST_MILE_API_URL;
 
 
     // CRUD operations

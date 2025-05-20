@@ -3,7 +3,7 @@ import { mapCategoryModel } from "../../utils/mapping";
 import Cookies from 'js-cookie';
 
 export class CategoryService {
-    apiUrl = import.meta.env.VITE_ETB_API_URL;
+    apiUrl = import.meta.env.VITE_LAST_MILE_API_URL;
 
 
     // CRUD operations

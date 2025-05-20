@@ -7,7 +7,7 @@ const ProtectedRoute = ({ children }) => {
 
   const isAuthenticated = authService.isLoggedIn();
 
-  return !isAuthenticated ? (
+  return isAuthenticated ? (
     children
   ) : (
     <Navigate

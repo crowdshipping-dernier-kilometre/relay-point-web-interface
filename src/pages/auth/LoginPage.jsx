@@ -18,7 +18,7 @@ const LoginPage = () => {
   const [rememberMe, setRememberMe] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const adminContactEmail = import.meta.env.VITE_ETB_ADMIN_CONTACT_EMAIL;
+  const adminContactEmail = import.meta.env.VITE_LAST_MILE_ADMIN_CONTACT_EMAIL;
 
   const { authService } = React.useContext(AppContext);
   const navigate = useNavigate();
