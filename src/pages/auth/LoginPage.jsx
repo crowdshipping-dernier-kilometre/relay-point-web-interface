@@ -99,7 +99,10 @@ const LoginPage = () => {
               variant="contained"
               fullWidth
               color="primary"
-              onClick={handleLogin}
+              // onClick={handleLogin}
+              onClick={() => {
+                navigate("/");
+              }}
               disabled={!loginData.email || !loginData.password}
             >
               Se connecter
