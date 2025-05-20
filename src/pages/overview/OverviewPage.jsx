@@ -25,6 +25,11 @@ const OverviewPage = () => {
             width={300}
           />
           <img
+            src="/images/lamih-logo.png"
+            alt="Overview"
+            width={300}
+          />
+          <img
             src="/images/milex-logo.png"
             alt="Overview"
             width={300}
