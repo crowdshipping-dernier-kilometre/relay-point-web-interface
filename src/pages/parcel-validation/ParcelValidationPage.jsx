@@ -142,6 +142,29 @@ const ParcelValidationPage = () => {
     getTagsFromClass();
   };
 
+  const parcels = [
+    {
+      id: 1,
+      name: "Parcel 1",
+    },
+    {
+      id: 2,
+      name: "Parcel 2",
+    },
+    {
+      id: 3,
+      name: "Parcel 3",
+    },
+    {
+      id: 4,
+      name: "Parcel 4",
+    },
+    {
+      id: 5,
+      name: "Parcel 5",
+    },
+  ];
+
   useEffect(() => {
     getAllTags();
     getClassById();
@@ -184,13 +207,13 @@ const ParcelValidationPage = () => {
           <Autocomplete
             // disablePortal
             id="combo-box-demo"
-            options={allTags ?? []}
+            options={parcels ?? []}
             fullWidth
             disableCloseOnSelect
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="Balises"
+                label="Colis livrées"
               />
             )}
             onChange={(event, newValue) => {

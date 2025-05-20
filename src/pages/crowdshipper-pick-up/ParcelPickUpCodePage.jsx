@@ -36,7 +36,7 @@ const ParcelPickUpCodePage = () => {
 
   const searchParcelByCode = async () => {
     setIsLoading(true);
-    const response = await parcelService.getParcelByCode(values.code);
+    // const response = await parcelService.getParcelByCode(values.code);
     setIsLoading(false);
     if (response.error) {
       console.error(response.message);

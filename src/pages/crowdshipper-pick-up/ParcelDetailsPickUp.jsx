@@ -70,7 +70,7 @@ const ParcelDetailsPickUpPage = () => {
 
   const pickupParcelByCrowdshipper = async () => {
     setIsLoading(true);
-    const response = await parcelService.pickupParcelByCrowdshipper(parcelId);
+    // const response = await parcelService.pickupParcelByCrowdshipper(parcelId);
     setIsLoading(false);
     if (response.error) {
       console.error(response.message);
