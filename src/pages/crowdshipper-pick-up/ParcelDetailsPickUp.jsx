@@ -129,7 +129,7 @@ const ParcelDetailsPickUpPage = () => {
             variant="outlined"
             fullWidth
             name="idCrowdshipper"
-            value={values.idCrowdshipper}
+            value={values.crowdshipperId}
             onChange={handleChange}
             disabled
           />
