@@ -1,4 +1,4 @@
-# 📊 Admin Dashboard, réalisé par `Pape THIAM`
+# 📊 Interface point relais, réalisé par `Pape THIAM`
 
 ### 🎆 Aperçu
 
