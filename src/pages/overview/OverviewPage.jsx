@@ -30,6 +30,11 @@ const OverviewPage = () => {
             width={300}
           />
           <img
+            src="/images/cnrs-logo.svg.png"
+            alt="Overview"
+            width={300}
+          />
+          <img
             src="/images/milex-logo.png"
             alt="Overview"
             width={300}
