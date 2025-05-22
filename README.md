@@ -1,4 +1,4 @@
-# 📊 Admin Dashboard
+# 📊 Admin Dashboard, réalisé par `Pape THIAM`
 
 ### 🎆 Aperçu
 
